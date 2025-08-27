@@ -1,7 +1,7 @@
 package main
 
 import (
-	"encoding/json"
+	"fmt"
 	"time"
 
 	"utils/logger"
@@ -11,17 +11,15 @@ func main() {
 	// 使用接口
 	var log logger.LoggerInterface
 
-	jsonFormatter := func(level, msg string, t time.Time) string {
-		m := map[string]interface{}{
-			"time":  t.Format(time.RFC3339),
-			"level": level,
-			"msg":   msg,
-		}
-		b, _ := json.Marshal(m)
-		return string(b) + "\n"
+	textFormatter := func(level, msg string, t time.Time) string {
+		return fmt.Sprintf("[%s] [%s] %s\n",
+			t.Format("2006-01-02 15:04:05"), // 自定义时间格式
+			level,
+			msg,
+		)
 	}
 
-	log = logger.NewLogger("./app.log", 10, 5, 30, true, jsonFormatter)
+	log = logger.NewLogger("./app.log", 10, 5, 30, true, textFormatter)
 
 	defer log.(*logger.Logger).Close() // Close 需要具体类型才能调用
 
