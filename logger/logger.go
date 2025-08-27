@@ -68,9 +68,17 @@ func (l *Logger) log(level, msg string) {
 	}
 }
 
-func (l *Logger) Info(msg string)  { l.log("INFO", msg) }
-func (l *Logger) Warn(msg string)  { l.log("WARN", msg) }
-func (l *Logger) Error(msg string) { l.log("ERROR", msg) }
+func (l *Logger) Info(format string, args ...interface{}) {
+	l.log("INFO", fmt.Sprintf(format, args...))
+}
+
+func (l *Logger) Warn(format string, args ...interface{}) {
+	l.log("WARN", fmt.Sprintf(format, args...))
+}
+
+func (l *Logger) Error(format string, args ...interface{}) {
+	l.log("ERROR", fmt.Sprintf(format, args...))
+}
 
 func (l *Logger) SetFormatter(f Formatter) {
 	if f != nil {

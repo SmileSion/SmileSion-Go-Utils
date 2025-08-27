@@ -23,7 +23,7 @@ func main() {
 
 	defer log.(*logger.Logger).Close() // Close 需要具体类型才能调用
 
-	log.Info("启动应用成功")
+	log.Info("启动应用成功%s", "v1.0.0")
 	log.Warn("内存占用过高")
 	log.Error("数据库连接失败")
 }
