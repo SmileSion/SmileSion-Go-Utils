@@ -1,13 +1,17 @@
 package logger
 
-import "time"
+import (
+	"context"
+	"time"
+)
 
 // LoggerInterface 定义日志接口
 type LoggerInterface interface {
-	Info(format string, args ...interface{})
-	Warn(format string, args ...interface{})
-	Error(format string, args ...interface{})
+	Info(ctx context.Context, format string, args ...interface{})
+	Warn(ctx context.Context, format string, args ...interface{})
+	Error(ctx context.Context, format string, args ...interface{})
 	SetFormatter(f Formatter)
+	Close()
 }
 
 

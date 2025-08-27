@@ -1,6 +1,7 @@
 package logger
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"sync"
@@ -58,7 +59,18 @@ func (l *Logger) run() {
 	}
 }
 
-func (l *Logger) log(level, msg string) {
+// 内部 log 方法，可以自动从 ctx 中获取 traceID
+func (l *Logger) log(ctx context.Context, level, msg string) {
+	traceID := ""
+	if ctx != nil {
+		if v := ctx.Value("traceID"); v != nil {
+			traceID = v.(string)
+		}
+	}
+	if traceID != "" {
+		msg = fmt.Sprintf("[traceID: %s] %s", traceID, msg)
+	}
+
 	formatted := l.formatter(level, msg, time.Now())
 	select {
 	case l.logChan <- formatted:
@@ -68,16 +80,25 @@ func (l *Logger) log(level, msg string) {
 	}
 }
 
-func (l *Logger) Info(format string, args ...interface{}) {
-	l.log("INFO", fmt.Sprintf(format, args...))
+func (l *Logger) Info(ctx context.Context, format string, args ...interface{}) {
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	l.log(ctx, "INFO", fmt.Sprintf(format, args...))
 }
 
-func (l *Logger) Warn(format string, args ...interface{}) {
-	l.log("WARN", fmt.Sprintf(format, args...))
+func (l *Logger) Warn(ctx context.Context, format string, args ...interface{}) {
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	l.log(ctx, "WARN", fmt.Sprintf(format, args...))
 }
 
-func (l *Logger) Error(format string, args ...interface{}) {
-	l.log("ERROR", fmt.Sprintf(format, args...))
+func (l *Logger) Error(ctx context.Context, format string, args ...interface{}) {
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	l.log(ctx, "ERROR", fmt.Sprintf(format, args...))
 }
 
 func (l *Logger) SetFormatter(f Formatter) {
