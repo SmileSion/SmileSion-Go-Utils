@@ -122,7 +122,7 @@ func MustV5(namespace UUID, name string) UUID {
 }
 
 // ======================= 获取 MAC 地址（可选） =======================
-func getMAC() (net.HardwareAddr, error) {
+func GetMAC() (net.HardwareAddr, error) {
 	interfaces, err := net.Interfaces()
 	if err != nil {
 		return nil, err

@@ -13,8 +13,11 @@ func main() {
 	fmt.Println("UUID v4:", u4)
 
 	ns := uuid.MustV4() // 随机生成命名空间
-	u5 := uuid.MustV5(ns, "my-name")
+	mac,_ := uuid.GetMAC()
+	u5 := uuid.MustV5(ns, mac.String())
 	fmt.Println("UUID v5:", u5)
+
+	fmt.Println("Mac is :",mac)
 
 	// 校验
 	fmt.Println("v5 是否有效:", uuid.IsValidUUID(string(u5))) // true
