@@ -4,11 +4,16 @@ go 1.23.0
 
 require (
 	github.com/BurntSushi/toml v1.5.0
+	github.com/go-sql-driver/mysql v1.9.3
+	github.com/redis/go-redis/v9 v9.13.0
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 	modernc.org/sqlite v1.38.2
 )
 
 require (
+	filippo.io/edwards25519 v1.1.0 // indirect
+	github.com/cespare/xxhash/v2 v2.3.0 // indirect
+	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
