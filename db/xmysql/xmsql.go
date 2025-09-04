@@ -171,3 +171,18 @@ func (db *DB) Close() error {
     db.wg.Wait()
     return db.sqldb.Close()
 }
+
+func BuildMySQLDSN(user, password, host string, port int, dbname string, charset string, parseTime bool, loc string) string {
+    if charset == "" {
+        charset = "utf8mb4"
+    }
+    parseTimeStr := "False"
+    if parseTime {
+        parseTimeStr = "True"
+    }
+    if loc == "" {
+        loc = "Local"
+    }
+    return fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=%s&parseTime=%s&loc=%s",
+        user, password, host, port, dbname, charset, parseTimeStr, loc)
+}
