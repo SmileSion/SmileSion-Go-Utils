@@ -1,18 +1,4 @@
 // Package xredis 提供一个带缓冲队列与工作池的 Redis 异步/同步操作模块。
-// rdb, _ := xredis.Open(ctx, xredis.Config{
-//     Addr: "localhost:6379",
-// })
-// defer rdb.Close()
-
-// // 异步写
-// rdb.Enqueue(func(c redis.Cmdable) error {
-//     return c.Set(ctx, "foo", "bar", time.Hour).Err()
-// })
-
-// // 同步读
-// val, _ := rdb.Get(ctx, "foo")
-// fmt.Println(val)
-
 
 package xredis
 
@@ -126,14 +112,11 @@ func (db *DB) Enqueue(fn func(redis.Cmdable) error) {
     db.jobs <- job{fn: fn}
 }
 
-// Sync API
-func (db *DB) Get(ctx context.Context, key string) (string, error) {
-    return db.rdb.Get(ctx, key).Result()
+// ExecSync 同步执行一个 redis 命令（立即执行，不入队）
+func (db *DB) ExecSync(ctx context.Context, fn func(redis.Cmdable) error) error {
+    return fn(db.rdb) // 直接用 db.rdb 就行
 }
 
-func (db *DB) Set(ctx context.Context, key string, val any, exp time.Duration) error {
-    return db.rdb.Set(ctx, key, val, exp).Err()
-}
 
 func (db *DB) Close() error {
     db.cancel()

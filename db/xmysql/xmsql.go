@@ -1,10 +1,5 @@
 // Package xmysql 提供一个带缓冲队列与工作池的 MySQL 异步/同步读写模块。
-// db, _ := xmysql.Open(ctx, xmysql.Config{
-//     DSN: "root:123456@tcp(localhost:3306)/test?charset=utf8mb4&parseTime=True&loc=Local",
-// })
-// defer db.Close()
 
-// db.Enqueue("INSERT INTO logs(level,msg,created_at) VALUES(?,?,?)", "INFO", "hello", time.Now())
 
 package xmysql
 
