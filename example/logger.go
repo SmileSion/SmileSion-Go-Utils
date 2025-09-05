@@ -26,6 +26,6 @@ func main() {
 
 	log.Info(nil,"启动应用成功%s", "v1.0.0")
 	log.Warn(nil,"内存占用过高")
-	ctx := context.WithValue(context.Background(), "traceID", "abc123")
+	ctx := context.WithValue(context.Background(), logger.TraceIDKey, "abc123")
 	log.Error(ctx,"数据库连接失败")
 }

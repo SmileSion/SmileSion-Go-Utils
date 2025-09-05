@@ -10,6 +10,9 @@ import (
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
+type ctxKey string
+
+const TraceIDKey  ctxKey = "traceID"
 type Logger struct {
 	writer    *lumberjack.Logger
 	logChan   chan string
@@ -63,12 +66,12 @@ func (l *Logger) run() {
 func (l *Logger) log(ctx context.Context, level, msg string) {
 	traceID := ""
 	if ctx != nil {
-		if v := ctx.Value("traceID"); v != nil {
+		if v := ctx.Value(TraceIDKey); v != nil {
 			traceID = v.(string)
 		}
 	}
 	if traceID != "" {
-		msg = fmt.Sprintf("[traceID: %s] %s", traceID, msg)
+		msg = fmt.Sprintf("[%s: %s] %s", TraceIDKey ,traceID, msg)
 	}
 
 	formatted := l.formatter(level, msg, time.Now())
